@@ -8,34 +8,55 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Antigravity Rules for ITA Nexus (3-Developer Safe Collaboration)
+# Antigravity Rules for ITA Nexus (3-Developer Collaborative Engineering)
 
-Google Antigravity agents can edit many files and run terminal commands, so they need strict boundaries. Check your Antigravity settings for the terminal and review policies and choose the most cautious option that still lets you work, so you review edits and approve commands before they run.
+**Project:** ITA Nexus (Syscraft — PS1: ITA Digital Platform)  
+**Team:** 
+- Harrish R K (`24I318`, `@HarrishRK9788`)
+- Keshore P R (`24I326`)
+- David Melvin L (`24I309`)
 
-## Ownership Boundaries
-- **Dev 1 — Frontend:** `app/(public)/`, `app/(student)/`, `components/ui/`, `components/student/`
-- **Dev 2 — Backend & Security:** `lib/supabase/`, `lib/data/`, `lib/types/`, `supabase/`
-- **Dev 3 — Committee & Integration:** `app/(committee)/`, `components/committee/`, `tests/`, `.github/`
-- **Shared Contract Files (Consensus Required):** `package.json`, `package-lock.json`, `tailwind.config.*`, `app/layout.tsx`, `middleware.ts`, `.env.example`, `AGENTS.md`, `lib/types/`
+---
 
-## Mandatory Rules Every Agent Must Follow:
-1. **Scope Restriction:** Only modify files inside the folders owned by the developer who initiated the task. If a change is needed elsewhere, STOP and report it instead of editing.
-2. **No Unprompted Deletions:** Never delete a file or exported function unless the prompt explicitly names it. Prefer deprecating over deleting.
-3. **Shared Contract Protection:** Never edit shared contract files unless the task is explicitly marked as a `shared:` task with team consensus.
-4. **Immutable Migrations:** Never edit or delete an existing database migration. Always add a new timestamped migration file.
-5. **No Dangerous Terminal / Git Operations:** Never run `git push --force`, `git reset --hard`, `git clean`, `rm -rf`, or change git branches without asking.
-6. **No Secret Leaks:** Never touch `.env*` files or print secrets. The Supabase service-role key is strictly server-only and must never appear in client code.
-7. **Interface Preservation:** Preserve existing function signatures and types. If an interface must change, list every caller and update them all in the same task.
-8. **Automated Verification:** After any modification, run lint, typecheck, build, and tests, and report the results honestly.
+## 🤝 Collaborative Integration & Cross-Editing Rules
 
-## Prompt Template for Tasks:
-```text
-Task: [one specific change]. 
-You may change only: [list of files/folders]. 
-Do not change: [contract files and other owners' folders]. 
-Preserve these interfaces: [function names/types]. 
-Done when: [checks pass + specific behaviour works]. 
-Do not delete anything not listed here. At the end, list every file you changed and why.
-```
+All three developers use Google Antigravity to build, integrate, and polish features together. The following rules govern cross-developer edits:
 
-Never tell an agent to "build the whole app" or "fix everything". After each agent run, review the diff yourself before committing.
+### 1. Cross-Code Integration is Allowed and Encouraged
+A developer (and their Antigravity agent) **MAY** access, call, and edit another developer's code when needed to:
+- Connect UI components to backend endpoints or data stubs.
+- Pass required props or event handlers.
+- Fix integration bugs, type mismatches, or layout conflicts.
+- Ensure the entire website works end-to-end as one cohesive platform.
+
+### 2. STRICT RULE: No Destructive Rewrites or Module Deletions
+- **NEVER** delete or rewrite from scratch a feature, file, or module built by another developer.
+- **NEVER** discard another developer's logic to replace it with an entirely different approach.
+- Modifications to another developer's code must be **additive, surgical, and backward-compatible**:
+  - Keep the original structure and comments intact.
+  - Extend props, functions, or database queries rather than replacing them.
+  - If a function needs new behavior, add optional parameters or overload safely.
+
+### 3. Mutual Continuity & Zero Regression
+- When editing another developer's code to make your feature work, **verify that their original feature continues to function properly**.
+- Always run the verification suite before committing:
+  ```bash
+  npm run lint && npm run typecheck && npm test && npm run build
+  ```
+
+### 4. Database Migrations are Append-Only
+- Never edit or delete an existing migration in `supabase/migrations/`.
+- If schema adjustments are required for integration, add a new timestamped migration file.
+
+### 5. Shared Contracts (Consensus Required)
+- Modifications to `package.json`, `app/layout.tsx`, `middleware.ts`, `lib/types/`, or `.env.example` must be minimal and must not break existing dependencies or paths.
+
+### 6. No Secrets & Safe Operations
+- Never expose or commit `.env` files or the Supabase Service Role key.
+- Never execute destructive git commands (`git push --force`, `git reset --hard`, `git clean -fd`).
+
+---
+
+## 📋 Antigravity Agent Prompting Pattern
+When delegating work to Antigravity, use this mindset:
+> *"I am implementing/integrating [feature]. I need to consume/adjust [other dev's component/module]. Enhance it with the required changes without deleting or rewriting its existing logic. Ensure both features work together and all tests pass."*

@@ -1,21 +1,14 @@
 ## Description
-<!-- Provide a brief description of the changes in this PR -->
+<!-- Provide a brief description of the changes in this PR and how it integrates with the rest of the platform -->
 
-## PR Category
-- [ ] Feature (within my owned folders)
-- [ ] Bug fix
-- [ ] `cross:` Change across another developer's domain (Owner tagged as reviewer)
-- [ ] `shared:` Shared contract change (Requires consensus from all 3 developers)
+## PR Type
+- [ ] New Feature
+- [ ] Cross-Integration / Bug Fix (enhancing another module to connect features)
+- [ ] Shared Contract Update (`lib/types/`, configs, layouts)
 
-## Owned Folder Verification
-- [ ] Dev 1 (Frontend): `app/(public)/`, `app/(student)/`, `components/ui/`, `components/student/`
-- [ ] Dev 2 (Backend & Security): `lib/supabase/`, `lib/data/`, `lib/types/`, `supabase/`
-- [ ] Dev 3 (Committee & Integration): `app/(committee)/`, `components/committee/`, `tests/`, `.github/`
-
-## Pre-Merge Checklist
-- [ ] Only files in my owned folders changed, or this is an approved `cross:` / `shared:` PR
-- [ ] No unexpected deleted files or lines in `git diff --stat`
-- [ ] No secrets or `.env*` files committed
-- [ ] Lint, typecheck, build, and tests pass (`npm run lint && npm run typecheck && npm run build && npm test`)
-- [ ] Tested manually as student and as committee where relevant
-- [ ] All callers updated for any changed interface / function signature
+## Integration & Continuity Checklist
+- [ ] Additive & Non-Destructive: No existing module or another developer's code was deleted or rewritten from scratch.
+- [ ] Backward Compatibility: Existing features and interfaces modified remain working as expected.
+- [ ] Quality Checks Pass: `npm run lint && npm run typecheck && npm test && npm run build` all pass with 0 errors.
+- [ ] Security: No secrets, credentials, or `.env` files committed.
+- [ ] Multi-Role Testing: Verified the change does not violate role boundaries (Student vs. Committee).

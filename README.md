@@ -1,77 +1,104 @@
-# ITA Nexus
+# ITA NEXUS
 
-Official digital platform and association hub for the **Information Technology Association (ITA)** at PSG College of Technology.
+> **Secure Digital Operating Platform & Institutional Memory for ITA**  
+> *"One Platform. Every ITA Experience."*  
+> **Challenge:** Syscraft — ITA Innovation Challenge (Problem Statement PS1: ITA Digital Platform)  
+> **Institution:** PSG College of Technology — Department of Information Technology
 
 ---
 
-## 👥 3-Developer Roles & File Ownership
+## 👥 Development Team
+- **Harrish R K** (`24I318`) — `@HarrishRK9788`
+- **Keshore P R** (`24I326`)
+- **David Melvin L** (`24I309`)
 
-| Developer | Responsibility | Owned Folders |
+---
+
+## 🚀 Core Pillars & Platform Architecture
+
+| Pillar | Scope | Core Capabilities |
 | :--- | :--- | :--- |
-| **Dev 1 — Frontend** | Student UI & shared components | `app/(public)/`, `app/(student)/`, `components/ui/`, `components/student/` |
-| **Dev 2 — Backend & Security** | Database, auth, RLS, data functions | `lib/supabase/`, `lib/data/`, `lib/types/`, `supabase/` |
-| **Dev 3 — Committee & Integration** | Committee workflows, tests, CI, release | `app/(committee)/`, `components/committee/`, `tests/`, `.github/` |
-
-### 🔒 Shared Contract Files
-Changes to contract files require explicit PRs prefixed with `shared:` and consensus:
-- `package.json` & `package-lock.json`
-- `tailwind.config.*` / global styles
-- `app/layout.tsx`
-- `middleware.ts`
-- `.env.example`
-- `AGENTS.md`
-- `lib/types/`
+| **DISCOVER** | Public & Student | Events, Workshops, Competitions, Opportunities, Announcements |
+| **PARTICIPATE** | Student Experience | Smart Registration, QR Attendance Verification, Feedback, Digital Certificates |
+| **OPERATE** | Committee Operations | Role Dashboards, Approval Workflows, Tasks, Finance & Budgets, Analytics |
+| **REMEMBER** | Institutional Continuity | **ITA Passport** (4-year verified journey), **Memory Vault**, **Event Playbooks**, Committee Handover |
+| **IMPROVE** | System Intelligence | Automation, Attendance Insights, Safe & Role-aware AI Assistant |
+| **LEARN** | Onboarding | Interactive Role-Based Guided Tour, Contextual Help |
 
 ---
 
-## 🛠️ Tech Stack
-- **Framework:** [Next.js](https://nextjs.org/) (App Router, Turbopack, TypeScript)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **Backend & Auth:** [Supabase](https://supabase.com/) (PostgreSQL + Row Level Security)
-- **CI / CD:** GitHub Actions + Vercel
+## 🛡️ Role-Based Access Control (RBAC Hierarchy)
+1. **Faculty / Staff Mentor** — Institutional oversight & high-tier event approvals.
+2. **Secretary** — Executive governance, event authorization, control center.
+3. **Joint Secretary** — Operational review of event drafts and tasks.
+4. **Executive Members** — Drafting events, executing logistics, QR check-in scanning.
+5. **Treasurer** — Isolated financial workflows (expense requests, receipts, budget validation).
+6. **Students (640+ IT students)** — Event participation, ITA Passport, certificate repository.
 
 ---
 
-## 🚀 Getting Started
+## 🤝 Collaborative Engineering & Additive Integration Rules
 
-### 1. Install dependencies
-```bash
-npm install
-```
+All 3 developers use Google Antigravity to build and integrate features concurrently:
+1. **Cross-Module Editing for Integration:** Developers and agents **CAN** access, import, and enhance another developer's code to integrate workflows, pass props, and ensure end-to-end functionality.
+2. **Strictly Non-Destructive:** **NEVER** delete or rewrite an existing module from scratch. All changes to another developer's code must be additive, surgical, and backward-compatible.
+3. **Mutual Continuity:** When modifying another module to connect your feature, ensure both the existing feature and the new feature work seamlessly together.
+4. **Automated Verification:** Before committing, every developer must ensure all checks pass:
+   ```bash
+   npm run lint && npm run typecheck && npm test && npm run build
+   ```
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env.local` and add your Supabase credentials:
-```bash
-cp .env.example .env.local
-```
+---
 
-### 3. Run the Development Server
+## 📂 Ownership Directory Matrix
+
+| Developer Role | Primary Ownership | Contract / Cross-Integration Scope |
+| :--- | :--- | :--- |
+| **Dev 1 — Frontend** | `app/(public)/`, `app/(student)/`, `components/ui/`, `components/student/` | Consumes `lib/data/`, integrates with shared layout |
+| **Dev 2 — Backend & Security** | `lib/supabase/`, `lib/data/`, `lib/types/`, `supabase/` | Provides schema, RLS, auth, and query implementations |
+| **Dev 3 — Committee & Integration** | `app/(committee)/`, `components/committee/`, `tests/`, `.github/` | Committee workflow, CI/CD, integration testing |
+
+---
+
+## 🗓️ Implementation Roadmap
+
+### Phase 1 — Core MVP
+- Auth & Role Setup (`@psgtech.ac.in` domain restriction)
+- Event Approval Lifecycle: `Draft -> JS Review -> Secretary Approval -> Publish`
+- Smart Event Registration with duplicate prevention
+- QR Attendance Scanning
+- **ITA Passport**: 4-year continuous journey visualization
+- Role-based Guided Tour
+
+### Phase 2 — Ops & Institutional Continuity
+- Isolated Finance & Expense validation flow for Treasurer
+- Digital Certificate Generation
+- **Memory Vault** (event retrospectives & lessons learned)
+- **Event Playbooks** (reusable templates)
+- Automated Committee Handover without source-code alteration
+
+### Phase 3 — Intel & Enhancements
+- Role-aware AI Assistant
+- Personalized event recommendations
+- Advanced departmental analytics
+
+---
+
+## 🧪 Verification & Development Commands
+
 ```bash
+# Start local dev server
 npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) to view the application.
 
----
-
-## 🧪 Verification Commands
-
-Every developer must run and pass all checks before committing or opening a PR:
-```bash
-# Typecheck
+# Run Typecheck
 npm run typecheck
 
-# Lint
+# Run Linter
 npm run lint
 
-# Tests
-npm run test
+# Run Unit / Smoke Tests
+npm test
 
-# Production Build
+# Run Production Build
 npm run build
 ```
-
----
-
-## 🤖 Antigravity AI Safety Guidelines
-All agents must adhere to the rules specified in [`AGENTS.md`](./AGENTS.md). 
-Never request an agent to modify files outside your assigned domain without following the **Cross-Ownership Change Protocol**.
