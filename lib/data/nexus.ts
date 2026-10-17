@@ -20,8 +20,8 @@ export const MOCK_USERS: UserProfile[] = [
     year_of_study: 2,
     role: 'student',
     skills: ['React', 'Next.js', 'PostgreSQL'],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
   },
   {
     id: 'usr-exec-1',
@@ -32,8 +32,20 @@ export const MOCK_USERS: UserProfile[] = [
     year_of_study: 2,
     role: 'executive_member',
     skills: ['Event Ops', 'TypeScript'],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
+  },
+  {
+    id: 'usr-js-1',
+    email: '23i104@psgtech.ac.in',
+    name: 'Priya S',
+    roll_number: '23I104',
+    department: 'IT',
+    year_of_study: 3,
+    role: 'joint_secretary',
+    skills: ['Operations', 'Review Workflows'],
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
   },
   {
     id: 'usr-sec-1',
@@ -43,11 +55,53 @@ export const MOCK_USERS: UserProfile[] = [
     department: 'IT',
     year_of_study: 3,
     role: 'secretary',
-    skills: ['Governance', 'Security'],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    skills: ['Governance', 'Security', 'Decision Making'],
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
+  },
+  {
+    id: 'usr-treasurer-1',
+    email: '23i112@psgtech.ac.in',
+    name: 'Arun K',
+    roll_number: '23I112',
+    department: 'IT',
+    year_of_study: 3,
+    role: 'treasurer',
+    skills: ['Financial Audits', 'Budgeting', 'Reimbursements'],
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
+  },
+  {
+    id: 'usr-mentor-1',
+    email: 'hod.it@psgtech.ac.in',
+    name: 'Dr. Faculty Advisor',
+    department: 'IT',
+    year_of_study: 4,
+    role: 'faculty_mentor',
+    skills: ['Institutional Oversight', 'Syllabus & Research'],
+    created_at: '2026-09-01T00:00:00Z',
+    updated_at: '2026-09-01T00:00:00Z'
   }
 ];
+
+export function getPermissionsForRole(role: UserProfile['role']) {
+  return {
+    isStudent: role === 'student',
+    isCommittee: role !== 'student',
+    canViewPublishedEvents: true,
+    canRegisterEvents: role === 'student',
+    canViewPassport: role === 'student',
+    canDraftEvent: ['executive_member', 'joint_secretary', 'secretary', 'faculty_mentor'].includes(role),
+    canEditDraft: ['executive_member', 'joint_secretary', 'secretary', 'faculty_mentor'].includes(role),
+    canReviewDraft: ['joint_secretary', 'secretary', 'faculty_mentor'].includes(role),
+    canApproveEvent: ['secretary', 'faculty_mentor'].includes(role),
+    canDeleteEvent: ['secretary', 'faculty_mentor'].includes(role),
+    canScanAttendance: ['executive_member', 'joint_secretary', 'secretary'].includes(role),
+    canAccessFinance: ['treasurer', 'secretary', 'faculty_mentor'].includes(role),
+    canDisburseFinance: role === 'treasurer',
+    canManageCommittee: ['secretary', 'faculty_mentor'].includes(role)
+  };
+}
 
 export const MOCK_EVENTS: ItaEvent[] = [
   {

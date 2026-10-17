@@ -4,35 +4,38 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from './button';
 import { Badge } from './badge';
+import { RoleSwitcher } from './role-switcher';
+import { useRole } from './role-context';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { currentUser, permissions } = useRole();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
           <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
             ⚡
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-lg tracking-tight text-white group-hover:text-indigo-300 transition-colors">
+              <span className="font-bold text-base sm:text-lg tracking-tight text-white group-hover:text-indigo-300 transition-colors">
                 ITA NEXUS
               </span>
-              <Badge variant="cyan" className="text-[10px] px-1.5 py-0">
+              <Badge variant="cyan" className="text-[10px] px-1.5 py-0 hidden sm:inline-flex">
                 PSG Tech
               </Badge>
             </div>
-            <p className="text-[10px] text-slate-400 font-mono tracking-wider -mt-1 hidden sm:block">
+            <p className="text-[10px] text-slate-400 font-mono tracking-wider -mt-1 hidden md:block">
               IT ASSOCIATION PLATFORM
             </p>
           </div>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <nav className="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-300">
           <Link href="/#events" className="hover:text-white transition-colors">
             Events & Hackathons
           </Link>
@@ -40,78 +43,97 @@ export function Navbar() {
             <span>ITA Passport</span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           </Link>
+          {permissions.isCommittee && (
+            <Link href="/committee" className="hover:text-amber-300 text-amber-400 font-semibold transition-colors flex items-center gap-1.5">
+              <span>⚙️ Committee Control</span>
+              <Badge variant="warning" className="text-[9px] py-0 px-1">ITA Ops</Badge>
+            </Link>
+          )}
           <Link href="/#pillars" className="hover:text-white transition-colors">
             Pillars
           </Link>
-          <Link href="/#team" className="hover:text-white transition-colors">
-            Leadership
-          </Link>
         </nav>
 
-        {/* Actions */}
-        <div className="hidden sm:flex items-center gap-3">
-          <Link href="/dashboard">
-            <Button variant="glow" size="sm">
-              Student Dashboard →
-            </Button>
-          </Link>
-        </div>
+        {/* Role Switcher & Action Button */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <RoleSwitcher />
 
-        {/* Mobile menu button */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+          {permissions.isCommittee ? (
+            <Link href="/committee" className="hidden sm:inline-flex">
+              <Button variant="default" size="sm" className="bg-amber-600 hover:bg-amber-700 text-xs">
+                Committee Portal →
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/dashboard" className="hidden sm:inline-flex">
+              <Button variant="glow" size="sm" className="text-xs">
+                Student Portal →
+              </Button>
+            </Link>
+          )}
+
+          {/* Mobile menu button */}
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Nav dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-2 pb-4 space-y-3">
+        <div className="lg:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-2 pb-4 space-y-3">
+          <div className="text-xs text-slate-400 pb-2 border-b border-slate-800">
+            Signed in as: <strong className="text-slate-200">{currentUser.name}</strong> ({currentUser.role.replace('_', ' ')})
+          </div>
           <Link
             href="/#events"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-slate-300 hover:text-white"
+            className="block py-1.5 text-sm text-slate-300 hover:text-white"
           >
             Events & Hackathons
           </Link>
           <Link
             href="/dashboard"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-slate-300 hover:text-white"
+            className="block py-1.5 text-sm text-slate-300 hover:text-white"
           >
-            ITA Passport
+            Student ITA Passport
           </Link>
-          <Link
-            href="/#pillars"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-slate-300 hover:text-white"
-          >
-            Pillars
-          </Link>
-          <Link
-            href="/#team"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-sm text-slate-300 hover:text-white"
-          >
-            Leadership
-          </Link>
-          <div className="pt-2">
-            <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="glow" size="sm" className="w-full">
-                Student Dashboard →
-              </Button>
+          {permissions.isCommittee && (
+            <Link
+              href="/committee"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-1.5 text-sm font-semibold text-amber-400 hover:text-amber-300"
+            >
+              ⚙️ Committee Control Center
             </Link>
+          )}
+          <div className="pt-2">
+            {permissions.isCommittee ? (
+              <Link href="/committee" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="default" size="sm" className="w-full bg-amber-600 hover:bg-amber-700">
+                  Open Committee Control Center →
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="glow" size="sm" className="w-full">
+                  Student Dashboard →
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       )}

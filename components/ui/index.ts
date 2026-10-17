@@ -4,4 +4,6 @@ export * from './badge';
 export * from './input';
 export * from './navbar';
 export * from './footer';
+export * from './role-switcher';
+export * from './role-context';
 export * from './utils';
