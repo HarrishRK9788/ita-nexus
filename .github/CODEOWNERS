@@ -1,0 +1,41 @@
+# ==============================================================================
+# CODEOWNERS — ITA Nexus
+# 
+# Map each folder to its owner's GitHub username.
+# Note: Update placeholders below with teammate GitHub handles.
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Dev 1 — Frontend (Student UI, shared presentation components)
+# ------------------------------------------------------------------------------
+/app/(public)/          @HarrishRK9788
+/app/(student)/         @HarrishRK9788
+/components/ui/         @HarrishRK9788
+/components/student/    @HarrishRK9788
+
+# ------------------------------------------------------------------------------
+# Dev 2 — Backend & Security (Database, auth, RLS, data functions)
+# ------------------------------------------------------------------------------
+/lib/supabase/          @HarrishRK9788
+/lib/data/              @HarrishRK9788
+/lib/types/             @HarrishRK9788
+/supabase/              @HarrishRK9788
+
+# ------------------------------------------------------------------------------
+# Dev 3 — Committee & Integration (Committee workflows, tests, CI, release)
+# ------------------------------------------------------------------------------
+/app/(committee)/       @HarrishRK9788
+/components/committee/  @HarrishRK9788
+/tests/                 @HarrishRK9788
+/.github/               @HarrishRK9788
+
+# ------------------------------------------------------------------------------
+# Shared Contract Files — Changes require consensus from all 3 developers
+# ------------------------------------------------------------------------------
+/package.json           @HarrishRK9788
+/package-lock.json      @HarrishRK9788
+/tailwind.config.*      @HarrishRK9788
+/app/layout.tsx         @HarrishRK9788
+/middleware.ts          @HarrishRK9788
+/.env.example           @HarrishRK9788
+/AGENTS.md              @HarrishRK9788
