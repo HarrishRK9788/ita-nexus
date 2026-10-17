@@ -9,7 +9,7 @@ import { useRole } from './role-context';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { currentUser, permissions } = useRole();
+  const { currentUser, permissions, logout, isAuthenticated } = useRole();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
@@ -39,35 +39,63 @@ export function Navbar() {
           <Link href="/#events" className="hover:text-white transition-colors">
             Events & Hackathons
           </Link>
-          <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1.5">
+
+          {/* Student link */}
+          <Link href={isAuthenticated ? "/dashboard" : "/login"} className="hover:text-white transition-colors flex items-center gap-1.5">
             <span>ITA Passport</span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           </Link>
-          {permissions.isCommittee && (
-            <Link href="/committee" className="hover:text-amber-300 text-amber-400 font-semibold transition-colors flex items-center gap-1.5">
+
+          {/* Committee Portal link: ONLY VISIBLE IF LOGGED IN AS COMMITTEE MEMBER */}
+          {isAuthenticated && permissions.isCommittee && (
+            <Link
+              href="/committee"
+              className="hover:text-amber-300 text-amber-400 font-semibold transition-colors flex items-center gap-1.5"
+            >
               <span>⚙️ Committee Control</span>
               <Badge variant="warning" className="text-[9px] py-0 px-1">ITA Ops</Badge>
             </Link>
           )}
+
           <Link href="/#pillars" className="hover:text-white transition-colors">
             Pillars
           </Link>
         </nav>
 
-        {/* Role Switcher & Action Button */}
+        {/* Right side actions */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Role switcher for quick evaluation */}
           <RoleSwitcher />
 
-          {permissions.isCommittee ? (
-            <Link href="/committee" className="hidden sm:inline-flex">
-              <Button variant="default" size="sm" className="bg-amber-600 hover:bg-amber-700 text-xs">
-                Committee Portal →
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              {permissions.isCommittee ? (
+                <Link href="/committee" className="hidden sm:inline-flex">
+                  <Button variant="default" size="sm" className="bg-amber-600 hover:bg-amber-700 text-xs">
+                    Committee Portal →
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/dashboard" className="hidden sm:inline-flex">
+                  <Button variant="glow" size="sm" className="text-xs">
+                    Student Portal →
+                  </Button>
+                </Link>
+              )}
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={logout}
+                className="text-xs text-slate-400 hover:text-white hidden sm:inline-flex"
+              >
+                Logout
               </Button>
-            </Link>
+            </div>
           ) : (
-            <Link href="/dashboard" className="hidden sm:inline-flex">
+            <Link href="/login">
               <Button variant="glow" size="sm" className="text-xs">
-                Student Portal →
+                College Login →
               </Button>
             </Link>
           )}
@@ -94,9 +122,19 @@ export function Navbar() {
       {/* Mobile Nav dropdown */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-slate-800 bg-slate-950/95 px-4 pt-2 pb-4 space-y-3">
-          <div className="text-xs text-slate-400 pb-2 border-b border-slate-800">
-            Signed in as: <strong className="text-slate-200">{currentUser.name}</strong> ({currentUser.role.replace('_', ' ')})
-          </div>
+          {isAuthenticated && currentUser ? (
+            <div className="text-xs text-slate-400 pb-2 border-b border-slate-800 flex items-center justify-between">
+              <div>
+                Signed in: <strong className="text-slate-200">{currentUser.name}</strong> ({currentUser.role.replace('_', ' ')})
+              </div>
+              <button onClick={logout} className="text-rose-400 hover:underline">Logout</button>
+            </div>
+          ) : (
+            <div className="text-xs text-slate-400 pb-2 border-b border-slate-800">
+              Not signed in.
+            </div>
+          )}
+
           <Link
             href="/#events"
             onClick={() => setMobileMenuOpen(false)}
@@ -105,13 +143,15 @@ export function Navbar() {
             Events & Hackathons
           </Link>
           <Link
-            href="/dashboard"
+            href={isAuthenticated ? "/dashboard" : "/login"}
             onClick={() => setMobileMenuOpen(false)}
             className="block py-1.5 text-sm text-slate-300 hover:text-white"
           >
             Student ITA Passport
           </Link>
-          {permissions.isCommittee && (
+
+          {/* Committee link on mobile: ONLY IF COMMITTEE MEMBER */}
+          {isAuthenticated && permissions.isCommittee && (
             <Link
               href="/committee"
               onClick={() => setMobileMenuOpen(false)}
@@ -120,17 +160,26 @@ export function Navbar() {
               ⚙️ Committee Control Center
             </Link>
           )}
+
           <div className="pt-2">
-            {permissions.isCommittee ? (
-              <Link href="/committee" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="default" size="sm" className="w-full bg-amber-600 hover:bg-amber-700">
-                  Open Committee Control Center →
-                </Button>
-              </Link>
+            {isAuthenticated ? (
+              permissions.isCommittee ? (
+                <Link href="/committee" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="default" size="sm" className="w-full bg-amber-600 hover:bg-amber-700">
+                    Open Committee Control Center →
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="glow" size="sm" className="w-full">
+                    Student Dashboard →
+                  </Button>
+                </Link>
+              )
             ) : (
-              <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="glow" size="sm" className="w-full">
-                  Student Dashboard →
+                  Sign In with College Email →
                 </Button>
               </Link>
             )}

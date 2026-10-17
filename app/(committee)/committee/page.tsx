@@ -9,7 +9,7 @@ import { ItaEvent, EventStatus } from '@/lib/types';
 
 export default function CommitteePortalPage() {
   const { currentUser } = useRole();
-  const permissions = getPermissionsForRole(currentUser.role);
+  const permissions = getPermissionsForRole(currentUser?.role || 'student');
 
   // Local state for interactive demo actions
   const [events, setEvents] = useState<ItaEvent[]>(MOCK_EVENTS);
@@ -22,8 +22,35 @@ export default function CommitteePortalPage() {
   const [scanResult, setScanResult] = useState<string | null>(null);
 
   // ---------------------------------------------------------------------------
-  // 1. ACCESS CONTROL GUARD: STUDENTS CANNOT ACCESS COMMITTEE OPERATIONS
+  // 1. ACCESS CONTROL GUARD: STRICT AUTH & ROLE RESTRICTIONS
   // ---------------------------------------------------------------------------
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center p-6">
+          <Card className="max-w-md w-full border-indigo-500/40 bg-slate-900 shadow-2xl p-6 text-center space-y-4">
+            <div className="h-14 w-14 mx-auto rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center text-2xl">
+              🔒
+            </div>
+            <CardTitle className="text-xl">Authentication Required</CardTitle>
+            <p className="text-xs text-slate-300">
+              The Committee Portal is not publicly accessible. Please sign in with your official college email (<span className="font-mono text-cyan-400">@psgtech.ac.in</span>).
+            </p>
+            <div className="pt-2">
+              <Link href="/login?redirect=/committee">
+                <Button variant="glow" size="sm" className="w-full">
+                  Sign In with College Email →
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   if (!permissions.isCommittee) {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -35,26 +62,23 @@ export default function CommitteePortalPage() {
             </div>
             <div>
               <Badge variant="warning" className="mb-2">
-                RBAC Protection Enforced
+                Access Denied • ITA Committee Only
               </Badge>
-              <h2 className="text-2xl font-bold text-white">Restricted to ITA Committee Members</h2>
+              <h2 className="text-2xl font-bold text-white">Committee Portal Restricted</h2>
               <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-                You are currently viewing as <strong className="text-white">{currentUser.name} (Normal Student)</strong>.
+                You are currently signed in as <strong className="text-white">{currentUser.name}</strong> ({currentUser.roll_number}), which has the <Badge variant="cyan" className="text-xs">Normal Student</Badge> role.
               </p>
               <p className="text-xs text-slate-400 mt-2">
-                Normal students have read & participate permissions (browsing events, 1-click registration, viewing their 4-Year ITA Passport). Creating, editing, approving, and deleting events is restricted to ITA members.
+                Normal students have full access to discover events, register, and build their 4-Year ITA Passport. Organizing events, creating drafts, reviewing approvals, and deleting events is restricted to authorized ITA members.
               </p>
             </div>
 
             <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/dashboard">
                 <Button variant="glow" size="sm">
-                  ← Return to Student Portal
+                  ← Go to Student Portal & Passport
                 </Button>
               </Link>
-              <div className="text-xs text-slate-500">
-                (Tip: Use the <strong>Active Role dropdown</strong> in the top navbar to switch to Secretary, Faculty, or Exec Member!)
-              </div>
             </div>
           </Card>
         </main>

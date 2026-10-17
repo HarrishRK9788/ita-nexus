@@ -17,6 +17,10 @@ export function RoleSwitcher() {
     faculty_mentor: { label: 'Faculty Mentor (High Access)', icon: '👨‍🏫', badgeVariant: 'info' }
   };
 
+  if (!currentUser) {
+    return null;
+  }
+
   const currentConfig = roleLabels[currentUser.role];
 
   return (

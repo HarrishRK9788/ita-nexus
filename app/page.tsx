@@ -48,16 +48,16 @@ export default async function HomePage() {
 
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/dashboard">
+              <Link href="/login">
                 <Button variant="glow" size="lg" className="w-full sm:w-auto text-base">
-                  Open Student Dashboard & Passport →
+                  Sign In with College Email →
                 </Button>
               </Link>
-              <a href="#events">
+              <Link href="/dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto text-base">
-                  View Upcoming Events
+                  Student Portal & Passport
                 </Button>
-              </a>
+              </Link>
             </div>
 
             {/* Metrics Ribbon */}
